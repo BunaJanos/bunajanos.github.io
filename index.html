@@ -14,76 +14,63 @@
 <div class="container" id="dashboard" style="display: none;">
     <div class="header">
         <h1>Az okostelefon piac 2025-ben</h1>
-        <p>Átfogó technológiai és piaci elemzés (CSV + ÉLŐ API adatok)</p>
+        <p>HIBRID TECHNOLÓGIAI ÉS PIACI JELENTÉS</p>
     </div>
 
     <div class="chart-card">
         <h2>1. Gyártói Portfólió Mérete (CSV)</h2>
-        <p class="chart-desc">
-            <b>Hogyan értelmezzük?</b> Ez az oszlopdiagram azt mutatja meg, hogy az adatbázisunkban szereplő 900+ készülék közül melyik márka hány különböző modellel képviselteti magát. 
-            A magasabb oszlop azt jelzi, hogy a gyártó rendkívül aktív, és minden árszegmensben (olcsó, közép, prémium) kínál alternatívát.
-        </p>
+        <p class="chart-desc">Ez a grafikon a gyártók által az adatbázisba felvitt egyedi modellek számát mutatja. Segít azonosítani, mely márkák rendelkeznek a legszélesebb választékkal minden árszegmensben.</p>
         <div class="canvas-wrapper"><canvas id="c1"></canvas></div>
+        <div id="insight1" class="chart-insight"></div>
     </div>
 
     <div class="chart-card">
-        <h2>2. Memória (RAM) Szabványok Eloszlása (CSV)</h2>
-        <p class="chart-desc">
-            <b>Hogyan értelmezzük?</b> A kördiagram a telefonok rendszermemória szerinti megoszlását szemlélteti. 
-            Segítségével látható, hogy mi számít ma "belépő szintnek" (pl. 4GB) és mi az "iparági sztenderd" (pl. 8GB vagy 12GB). 
-            A nagyobb szeletek azokat a memóriaméreteket jelölik, amelyeket a gyártók a legoptimálisabbnak tartanak a mai szoftverek futtatásához.
-        </p>
+        <h2>2. Hardver Szabványok Eloszlása (CSV)</h2>
+        <p class="chart-desc">Váltson a gombokkal a RAM, a kamerák vagy a kijelzőméret között, hogy lássa, mi számít jelenleg az iparági sztenderdnek a piacon.</p>
+        <div class="toggle-container">
+            <button id="btnRam" class="toggle-btn active" onclick="switchChart2('ram')">RAM</button>
+            <button id="btnFCam" class="toggle-btn" onclick="switchChart2('fcam')">FRONT KAMERA</button>
+            <button id="btnBCam" class="toggle-btn" onclick="switchChart2('bcam')">HÁTLAPI KAMERA</button>
+            <button id="btnScreen" class="toggle-btn" onclick="switchChart2('screen')">KIJELZŐ</button>
+        </div>
         <div class="circular-wrapper"><canvas id="c2"></canvas></div>
+        <div id="insight2" class="chart-insight"></div>
     </div>
 
     <div class="chart-card">
-        <h2>3. Márka Ár-Dinamika és Pozicionálás (CSV)</h2>
-        <p class="chart-desc">
-            <b>Hogyan értelmezzük?</b> Ez a poláris diagram a legnépszerűbb márkák átlagos bevezetési árait veti össze. 
-            Minél kijebb nyúlik egy szelet sugara a középponttól, annál magasabb az adott márka átlagos árszínvonala. 
-            Ebből leolvasható, hogy mely márkák célozzák meg a luxus kategóriát (pl. Apple, Samsung High-end) és melyek a tömegpiacot.
-        </p>
+        <h2>3. Márka Ár-Dinamika (CSV)</h2>
+        <p class="chart-desc">A poláris diagram a gyártók átlagos bevezetési árait hasonlítja össze. Minél kijebb ér a "szelet", annál drágább prémium eszközöket gyárt az adott márka.</p>
         <div class="circular-wrapper"><canvas id="c3"></canvas></div>
+        <div id="insight3" class="chart-insight"></div>
     </div>
 
     <div class="chart-card">
-        <h2>4. Piaci Árszint Evolúció (2014-2025) (CSV)</h2>
-        <p class="chart-desc">
-            <b>Hogyan értelmezzük?</b> A vonaldiagram az okostelefonok átlagos vételárának változását mutatja az időben. 
-            A felfelé ívelő görbe a technológiai fejlődéssel járó inflációt és a prémium (hajlítható, AI-fókuszú) készülékek térnyerését tükrözi. 
-            Látható, hogyan vált a mobiltelefon egyre értékesebb tech-eszközzé az elmúlt évtizedben.
-        </p>
+        <h2>4. Piaci Árszint Evolúció (CSV)</h2>
+        <p class="chart-desc">A vonaldiagram az átlagos okostelefon-árak változását mutatja be 2014-től napjainkig, tükrözve a technológiai fejlődést és az inflációt.</p>
         <div class="canvas-wrapper"><canvas id="c4"></canvas></div>
+        <div id="insight4" class="chart-insight"></div>
     </div>
 
     <div class="chart-card">
-        <h2>5. Kijelzőméret és Energia-sűrűség Korreláció (CSV)</h2>
-        <p class="chart-desc">
-            <b>Hogyan értelmezzük?</b> Minden egyes pont egy telefont jelöl. A vízszintes tengely a kijelzőt (inch), a függőleges az akkumulátort (mAh) mutatja. 
-            A grafikon segít megérteni az ergonómiai kompromisszumot: a nagyobb kijelző általában nagyobb akkut igényel, de láthatóak olyan "technológiai bravúrok" is, ahol kisméretű házba is nagy kapacitású telepet tettek.
-        </p>
+        <h2>5. Méret és Energia Egyensúlya (CSV)</h2>
+        <p class="chart-desc">A szórásdiagram a kijelzőméret (inch) és az akkumulátor kapacitás (mAh) kapcsolatát elemzi. Vigye az egeret a pontokra a konkrét modell nevéért!</p>
         <div class="canvas-wrapper"><canvas id="c5"></canvas></div>
+        <div id="insight5" class="chart-insight"></div>
     </div>
 
     <div class="chart-card">
         <h2>6. Egyedi Márka Elemzés (CSV)</h2>
-        <p class="chart-desc">
-            <b>Hogyan értelmezzük?</b> Ez egy interaktív eszköz. A lenyíló menüből kiválasztott márka modelljeit listázza ki ár szerint. 
-            Itt ellenőrizhető a gyártók belső árazási stratégiája: mekkora az árkülönbség az alapmodellek és a csúcskészülékek között. 
-            A diagram az 1000 dollár feletti prémium eszközöket is pontosan kezeli.
-        </p>
+        <p class="chart-desc">Válasszon ki egy konkrét gyártót, hogy lássa a modelljeik árazását. A diagram az 1000 dollár feletti prémium készülékeket is pontosan kezeli.</p>
         <select id="brandSelector" onchange="updateInteractive()"></select>
         <div class="canvas-wrapper"><canvas id="c6"></canvas></div>
+        <div id="insight6" class="chart-insight"></div>
     </div>
 
     <div class="chart-card" style="border-color: var(--accent);">
         <h2 style="color: var(--accent);">7. ÉLŐ: Globális Márka-ökoszisztéma (API)</h2>
-        <p class="chart-desc">
-            <b>Hogyan értelmezzük?</b> Ez a vizualizáció élő adatokat használ a <i>Phone Specs API</i>-ból. 
-            A buborékok mérete nem a helyi CSV-nktől függ, hanem a globális adatbázisban regisztrált összes modell számától. 
-            Minél nagyobb egy buborék, annál nagyobb történelmi és jelenkori lábnyoma van az adott márkának a világpiacon.
-        </p>
+        <p class="chart-desc">Élő adatok az internetről: a buborékok mérete azt mutatja meg, hány darab eszközt tartanak nyilván globálisan az adott gyártótól.</p>
         <div class="canvas-wrapper"><canvas id="c7_bubble_api"></canvas></div>
+        <div id="insight7" class="chart-insight"></div>
     </div>
 </div>
 
@@ -93,6 +80,7 @@
     let globalData = [];
     let charts = {};
     const neonColors = ['#00f2ff', '#bc13fe', '#00ff9d', '#ff0070', '#ffb000', '#3498db'];
+    window.dataStore = { ram: {}, fcam: {}, bcam: {}, screen: {} };
 
     Promise.all([
         fetch(CSV_FILE).then(r => { if(!r.ok) throw new Error("CSV nem található!"); return r.text(); }),
@@ -104,96 +92,129 @@
                 globalData = results.data;
                 document.getElementById('status').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
+                processHardwareData();
                 initDashboard(apiJson.data);
             }
         });
     }).catch(err => {
         document.getElementById('status').innerHTML = "HIBA: " + err.message;
-        document.getElementById('status').style.background = "red";
     });
 
     function clean(val) {
         if(!val) return 0;
-        let s = val.toString().trim().replace('$', '');
+        let s = val.toString().trim().replace('$', '').replace('MP', '').replace('GB', '');
         if (s.includes(',')) {
             let parts = s.split(',');
-            if (parts[parts.length - 1].length === 3) s = s.replace(',', ''); 
-            else s = s.replace(',', '.'); 
+            if (parts[parts.length - 1].length === 3) s = s.replace(',', '');
+            else s = s.replace(',', '.');
         }
         return parseFloat(s.replace(/[^\d.-]/g, '')) || 0;
     }
 
+    function processHardwareData() {
+        globalData.forEach(d => {
+            const r = clean(d['RAM']), fc = clean(d['Front Camera']), 
+                  bc = clean(d['Back Camera']), sc = clean(d['Screen Size']);
+            if(r) window.dataStore.ram[r + ' GB'] = (window.dataStore.ram[r + ' GB'] || 0) + 1;
+            if(fc) window.dataStore.fcam[fc + ' MP'] = (window.dataStore.fcam[fc + ' MP'] || 0) + 1;
+            if(bc) window.dataStore.bcam[bc + ' MP'] = (window.dataStore.bcam[bc + ' MP'] || 0) + 1;
+            if(sc) window.dataStore.screen[sc + '"'] = (window.dataStore.screen[sc + '"'] || 0) + 1;
+        });
+    }
+
     function initDashboard(apiData) {
-        const brands = {}, ramDist = {}, yearTrend = {}, scatterData = [], bPrices = {};
+        const brands = {}, yearTrend = {}, scatterData = [], bPrices = {};
 
         globalData.forEach(d => {
-            const b = d['Company Name'], p = clean(d['Launched Price (USA)']), r = clean(d['RAM']), 
+            const b = d['Company Name'], p = clean(d['Launched Price (USA)']), 
                   y = d['Launched Year'], s = clean(d['Screen Size']), 
-                  batt = clean(d['Battery Capacity']) < 10 ? clean(d['Battery Capacity']) * 1000 : clean(d['Battery Capacity']);
+                  batt = clean(d['Battery Capacity']);
 
             if(b) {
                 brands[b] = (brands[b] || 0) + 1;
                 if(!bPrices[b]) bPrices[b] = {s:0, c:0};
                 if(p > 0) { bPrices[b].s += p; bPrices[b].c++; }
             }
-            if(r) ramDist[r + ' GB'] = (ramDist[r + ' GB'] || 0) + 1;
             if(y && p) { if(!yearTrend[y]) yearTrend[y] = {s:0, c:0}; yearTrend[y].s += p; yearTrend[y].c++; }
-            if(s && batt) scatterData.push({x:s, y:batt, model: (d['Model '] || '').trim()});
+            if(s > 2 && batt > 500) scatterData.push({x: s, y: batt, model: (d['Model '] || 'Ismeretlen').trim()});
         });
 
+        // C1
         const topBrands = Object.entries(brands).sort((a,b)=>b[1]-a[1]).slice(0, 10);
-        
-        createChart('c1', 'bar', { labels: topBrands.map(x=>x[0]), datasets: [{ label: 'Modellek száma', data: topBrands.map(x=>x[1]), backgroundColor: '#00f2ff' }] });
-        createChart('c2', 'doughnut', { labels: Object.keys(ramDist), datasets: [{ data: Object.values(ramDist), backgroundColor: neonColors }] }, { cutout: '70%', maintainAspectRatio: false });
-        
-        const pLabels = topBrands.slice(0, 7).map(x=>x[0]);
-        createChart('c3', 'polarArea', { labels: pLabels, datasets: [{ data: pLabels.map(b=> bPrices[b].c > 0 ? bPrices[b].s/bPrices[b].c : 0), backgroundColor: neonColors.map(c=>c+'88') }] }, { scales: { r: { ticks: { display: false } } }, maintainAspectRatio: false });
-        
-        const years = Object.keys(yearTrend).sort();
-        createChart('c4', 'line', { labels: years, datasets: [{ label: 'Átlagár (USD)', data: years.map(y=>yearTrend[y].s/yearTrend[y].c), borderColor: '#bc13fe', tension: 0.4 }] });
-        
-        createChart('c5', 'scatter', { datasets: [{ label: 'Modellek', data: scatterData, backgroundColor: 'rgba(0, 242, 255, 0.4)' }] }, { plugins: { tooltip: { callbacks: { label: (ctx)=>ctx.raw.model } } } });
+        createChart('c1', 'bar', { labels: topBrands.map(x=>x[0]), datasets: [{ label: 'Modellek', data: topBrands.map(x=>x[1]), backgroundColor: '#00f2ff' }] });
+        document.getElementById('insight1').innerHTML = `<b>Elemzés:</b> A portfólió méretét tekintve a(z) <b>${topBrands[0][0]}</b> a legaktívabb gyártó az adatbázisunkban.`;
 
-        const apiSorted = apiData.sort((a,b) => b.device_count - a.device_count).slice(0, 20);
-        new Chart(document.getElementById('c7_bubble_api'), {
-            type: 'bubble',
-            data: {
-                datasets: apiSorted.map((b, i) => ({
-                    label: b.brand_name,
-                    data: [{ x: i + 1, y: 50, r: Math.sqrt(b.device_count) * 2 }],
-                    backgroundColor: neonColors[i % neonColors.length] + '88',
-                    borderColor: neonColors[i % neonColors.length],
-                    borderWidth: 2
-                }))
+        switchChart2('ram');
+
+        // C3
+        const pLabels = topBrands.slice(0, 7).map(x=>x[0]);
+        const pValues = pLabels.map(b => bPrices[b].c > 0 ? bPrices[b].s/bPrices[b].c : 0);
+        createChart('c3', 'polarArea', { labels: pLabels, datasets: [{ data: pValues, backgroundColor: neonColors.map(c=>c+'88') }] }, { scales: { r: { ticks: { display: false } } } });
+        const maxPIdx = pValues.indexOf(Math.max(...pValues));
+        document.getElementById('insight3').innerHTML = `<b>Elemzés:</b> Az árazás alapján a(z) <b>${pLabels[maxPIdx]}</b> márka célozza meg leginkább a prémium kategóriát.`;
+
+        // C4
+        const years = Object.keys(yearTrend).sort();
+        const trendData = years.map(y=>yearTrend[y].s/yearTrend[y].c);
+        createChart('c4', 'line', { labels: years, datasets: [{ label: 'Átlagár ($)', data: trendData, borderColor: '#bc13fe', tension: 0.4 }] });
+        document.getElementById('insight4').innerHTML = `<b>Elemzés:</b> A grafikon emelkedő tendenciát mutat, ami tükrözi a technológiai költségek növekedését az évek során.`;
+
+        // C5
+        createChart('c5', 'scatter', { 
+            datasets: [{ label: 'Készülékek', data: scatterData, backgroundColor: 'rgba(0, 242, 255, 0.4)' }] 
+        }, { 
+            scales: {
+                x: { title: { display: true, text: 'Kijelző (inch)' }, min: 3, max: 8 },
+                y: { title: { display: true, text: 'Akku (mAh)' }, min: 1000, max: 7000 }
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: { x: { display: false }, y: { display: false, min: 0, max: 100 } },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${apiSorted[ctx.datasetIndex].device_count} eszköz` } }
-                }
-            }
+            plugins: { tooltip: { callbacks: { label: (ctx) => `${ctx.raw.model}: ${ctx.raw.x}" - ${ctx.raw.y}mAh` } } } 
         });
+        document.getElementById('insight5').innerHTML = `<b>Elemzés:</b> Megfigyelhető a pozitív korreláció: a nagyobb kijelzőfelülethez szinte minden gyártó nagyobb kapacitású akkumulátort párosít.`;
+
+        // C7
+        const apiSorted = apiData.sort((a,b) => b.device_count - a.device_count).slice(0, 20);
+        createChart('c7_bubble_api', 'bubble', {
+            datasets: apiSorted.map((b, i) => ({
+                label: b.brand_name,
+                data: [{ x: i + 1, y: 50, r: Math.sqrt(b.device_count) * 2 }],
+                backgroundColor: neonColors[i % neonColors.length] + '88',
+                borderColor: neonColors[i % neonColors.length],
+                borderWidth: 2
+            }))
+        }, { scales: { x: { display: false }, y: { display: false, min: 0, max: 100 } }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${apiSorted[ctx.datasetIndex].device_count} eszköz` } } } });
+        document.getElementById('insight7').innerHTML = `<b>Elemzés:</b> A(z) <b>${apiSorted[0].brand_name}</b> rendelkezik a legtöbb regisztrált eszközzel a globális adatbázisban.`;
 
         const sel = document.getElementById('brandSelector');
         [...new Set(globalData.map(d=>d['Company Name']))].sort().forEach(b => { if(b) sel.innerHTML += `<option value="${b}">${b}</option>`; });
         updateInteractive();
     }
 
+    function switchChart2(mode) {
+        const dist = window.dataStore[mode];
+        const btnIds = { ram: 'btnRam', fcam: 'btnFCam', bcam: 'btnBCam', screen: 'btnScreen' };
+        Object.values(btnIds).forEach(id => document.getElementById(id).classList.remove('active'));
+        document.getElementById(btnIds[mode]).classList.add('active');
+        createChart('c2', 'doughnut', { labels: Object.keys(dist), datasets: [{ data: Object.values(dist), backgroundColor: neonColors }] }, { cutout: '70%' });
+        const sorted = Object.entries(dist).sort((a,b)=>b[1]-a[1]);
+        document.getElementById('insight2').innerHTML = `<b>Elemzés:</b> A(z) <b>${sorted[0][0]}</b> a leggyakoribb konfiguráció ebben a kategóriában.`;
+    }
+
     function createChart(id, type, data, opts = {}) {
-        return new Chart(document.getElementById(id), { type, data, options: { ...opts, responsive: true, maintainAspectRatio: false } });
+        if(charts[id]) charts[id].destroy();
+        charts[id] = new Chart(document.getElementById(id), { type: type, data: data, options: { ...opts, responsive: true, maintainAspectRatio: false } });
+        return charts[id];
     }
 
     function updateInteractive() {
         const brand = document.getElementById('brandSelector').value;
         const subset = globalData.filter(d => d['Company Name'] === brand).slice(0, 15);
-        if(charts['c6']) charts['c6'].destroy();
-        charts['c6'] = createChart('c6', 'bar', {
+        const prices = subset.map(d => clean(d['Launched Price (USA)']));
+        createChart('c6', 'bar', {
             labels: subset.map(d => (d['Model '] || '').trim()),
-            datasets: [{ label: 'Bevezetési Ár (USD)', data: subset.map(d => clean(d['Launched Price (USA)'])), backgroundColor: '#00f2ff' }]
-        }, { indexAxis: 'y', scales: { x: { beginAtZero: true, max: 1600 } } });
+            datasets: [{ label: 'Ár (USD)', data: prices, backgroundColor: '#00f2ff' }]
+        }, { indexAxis: 'y', scales: { x: { beginAtZero: true, max: 2500 } } });
+        const avg = prices.length ? prices.reduce((a,b)=>a+b, 0) / prices.length : 0;
+        document.getElementById('insight6').innerHTML = `<b>Elemzés:</b> A(z) ${brand} modellek átlagos bevezetési ára ebben a válogatásban <b>$${avg.toFixed(0)}</b>.`;
     }
 </script>
 </body>

@@ -1,37 +1,48 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600&display=swap');
 
 :root {
-    --bg-color: #010204;
-    --card-bg: #0a0c10;
+    --bg-color: #02040a;
+    --card-bg: rgba(13, 17, 23, 0.95);
     --primary: #00f2ff;
     --secondary: #bc13fe;
     --accent: #00ff9d;
     --text-main: #ffffff;
     --text-dim: #94a3b8;
-    --border: rgba(0, 242, 255, 0.4);
+    --border: rgba(0, 242, 255, 0.3);
+    --insight-bg: rgba(188, 19, 254, 0.1);
 }
 
 body {
     background-color: var(--bg-color);
+    /* Modern technológiai háttér: gradiens + hálóminta */
+    background-image: 
+        linear-gradient(to bottom, rgba(2, 4, 10, 0.8), rgba(13, 17, 23, 0.9)),
+        radial-gradient(circle at 50% 0%, rgba(0, 242, 255, 0.15), transparent 50%),
+        linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
     color: var(--text-main);
     font-family: 'Inter', sans-serif;
     margin: 0; padding: 0;
     display: flex; flex-direction: column; align-items: center;
+    min-height: 100vh;
 }
 
 .container { width: 90%; max-width: 1000px; padding: 60px 0; }
 
 .header { text-align: center; margin-bottom: 60px; }
 .header h1 {
-    font-family: 'Orbitron', sans-serif; font-size: clamp(2rem, 8vw, 4rem);
+    font-family: 'Orbitron', sans-serif; font-size: clamp(2rem, 8vw, 3.5rem);
     letter-spacing: 10px; background: linear-gradient(to right, var(--primary), var(--secondary));
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;
+    filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.5));
 }
 
 .chart-card {
-    background: var(--card-bg); border: 2px solid var(--border);
+    background: var(--card-bg); border: 1px solid var(--border);
     border-radius: 20px; padding: 40px; margin-bottom: 60px;
-    box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
 }
 
 .chart-card h2 {
@@ -40,21 +51,35 @@ body {
 }
 
 .chart-desc {
-    font-size: 1.3rem; color: var(--text-dim); margin-bottom: 30px;
-    line-height: 1.7; border-left: 4px solid var(--secondary); padding-left: 20px;
+    font-size: 1.1rem; color: var(--text-dim); margin-bottom: 25px;
+    line-height: 1.6; border-left: 4px solid var(--secondary); padding-left: 20px;
 }
+
+.chart-insight {
+    margin-top: 25px; padding: 20px; background: var(--insight-bg);
+    border-radius: 10px; border-left: 4px solid var(--accent);
+    font-size: 1.1rem; color: var(--accent); line-height: 1.5;
+}
+
+.chart-insight b { font-family: 'Orbitron'; text-transform: uppercase; font-size: 0.9rem; }
 
 .canvas-wrapper { position: relative; width: 100%; height: 500px; }
-
 .circular-wrapper {
-    width: 100%; max-width: 450px; height: 450px;
-    margin: 0 auto; position: relative;
+    width: 100%; max-width: 450px; height: 450px; margin: 0 auto; position: relative;
 }
 
+.toggle-container { display: flex; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; }
+.toggle-btn {
+    background: transparent; border: 1px solid var(--primary); color: var(--primary);
+    padding: 10px 15px; cursor: pointer; font-family: 'Orbitron'; font-size: 0.75rem;
+    transition: 0.3s; flex: 1; min-width: 120px;
+}
+.toggle-btn.active { background: var(--primary); color: #000; box-shadow: 0 0 15px var(--primary); }
+
 select {
-    background: #000; color: var(--primary); border: 2px solid var(--primary);
-    padding: 15px; font-family: 'Orbitron', sans-serif; font-size: 1.1rem;
-    width: 100%; margin-bottom: 30px; cursor: pointer;
+    background: #000; color: var(--primary); border: 1px solid var(--primary);
+    padding: 15px; font-family: 'Orbitron', sans-serif; font-size: 1rem;
+    width: 100%; margin-bottom: 30px;
 }
 
 #status {
