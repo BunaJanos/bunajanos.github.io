@@ -2,141 +2,199 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <title>Smartphone Market Analytics - CSV Edition</title>
-    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
-    <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: #fff; padding: 20px; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px; }
-        .card { background: rgba(255,255,255,0.05); border-radius: 15px; padding: 20px; border: 1px solid #334155; }
-        h1 { text-align: center; color: #38bdf8; margin-bottom: 30px; }
-        .full-width { grid-column: 1 / -1; }
-        .chart { width: 100%; height: 350px; }
-    </style>
+    <title>Az okostelefon piac 2025-ben</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <div class="container">
-        <h1>📱 Smartphone Market Analytics</h1>
-        <div class="grid">
-            <div class="card">
-                <h3>🌐 Élő USD/HUF Árfolyam (API)</h3>
-                <div id="chart-api" class="chart"></div>
-            </div>
 
-            <div class="card">
-                <h3>🥧 Piaci részesedés (Márkák)</h3>
-                <div id="chart-pie" class="chart"></div>
-            </div>
+<div id="status">RENDSZER ELLENŐRZÉSE...</div>
 
-            <div class="card full-width">
-                <h3>🔍 Interaktív: Ár vs. RAM (Kereshető)</h3>
-                <div id="chart-scatter" class="chart"></div>
-            </div>
-
-            <div class="card">
-                <h3>💰 Átlagár gyártónként (USD)</h3>
-                <div id="chart-bar" class="chart"></div>
-            </div>
-
-            <div class="card">
-                <h3>🔋 Akkumulátor kapacitás trend</h3>
-                <div id="chart-hist" class="chart"></div>
-            </div>
-
-            <div class="card full-width">
-                <h3>📈 Megjelenések száma az évek során</h3>
-                <div id="chart-line" class="chart"></div>
-            </div>
-        </div>
+<div class="container" id="dashboard" style="display: none;">
+    <div class="header">
+        <h1>Az okostelefon piac 2025-ben</h1>
+        <p>Átfogó technológiai és piaci elemzés (CSV + ÉLŐ API adatok)</p>
     </div>
 
-    <script>
-        // A te CSV fájlod neve a GitHub-on
-        const csvFile = "Mobiles Dataset (2025).csv";
-        
-        // CSV beállítások (Mivel pontosvesszős a fájlod!)
-        const csvData = {
-            "url": csvFile,
-            "format": {"type": "csv", "delimiter": ";"}
-        };
+    <div class="chart-card">
+        <h2>1. Gyártói Portfólió Mérete (CSV)</h2>
+        <p class="chart-desc">
+            <b>Hogyan értelmezzük?</b> Ez az oszlopdiagram azt mutatja meg, hogy az adatbázisunkban szereplő 900+ készülék közül melyik márka hány különböző modellel képviselteti magát. 
+            A magasabb oszlop azt jelzi, hogy a gyártó rendkívül aktív, és minden árszegmensben (olcsó, közép, prémium) kínál alternatívát.
+        </p>
+        <div class="canvas-wrapper"><canvas id="c1"></canvas></div>
+    </div>
 
-        // 1. API hívás (Currency)
-        async function fetchCurrency() {
-            const res = await fetch('https://open.er-api.com/v6/latest/USD');
-            const data = await res.json();
-            const rate = data.rates.HUF;
-            const apiSpec = {
-                "data": {"values": [{"c": "USD", "v": 1}, {"c": "HUF", "v": rate}]},
-                "mark": "bar",
-                "encoding": {
-                    "x": {"field": "c", "type": "nominal", "title": "Pénznem"},
-                    "y": {"field": "v", "type": "quantitative", "title": "Érték"}
-                }
-            };
-            vegaEmbed('#chart-api', apiSpec);
+    <div class="chart-card">
+        <h2>2. Memória (RAM) Szabványok Eloszlása (CSV)</h2>
+        <p class="chart-desc">
+            <b>Hogyan értelmezzük?</b> A kördiagram a telefonok rendszermemória szerinti megoszlását szemlélteti. 
+            Segítségével látható, hogy mi számít ma "belépő szintnek" (pl. 4GB) és mi az "iparági sztenderd" (pl. 8GB vagy 12GB). 
+            A nagyobb szeletek azokat a memóriaméreteket jelölik, amelyeket a gyártók a legoptimálisabbnak tartanak a mai szoftverek futtatásához.
+        </p>
+        <div class="circular-wrapper"><canvas id="c2"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+        <h2>3. Márka Ár-Dinamika és Pozicionálás (CSV)</h2>
+        <p class="chart-desc">
+            <b>Hogyan értelmezzük?</b> Ez a poláris diagram a legnépszerűbb márkák átlagos bevezetési árait veti össze. 
+            Minél kijebb nyúlik egy szelet sugara a középponttól, annál magasabb az adott márka átlagos árszínvonala. 
+            Ebből leolvasható, hogy mely márkák célozzák meg a luxus kategóriát (pl. Apple, Samsung High-end) és melyek a tömegpiacot.
+        </p>
+        <div class="circular-wrapper"><canvas id="c3"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+        <h2>4. Piaci Árszint Evolúció (2014-2025) (CSV)</h2>
+        <p class="chart-desc">
+            <b>Hogyan értelmezzük?</b> A vonaldiagram az okostelefonok átlagos vételárának változását mutatja az időben. 
+            A felfelé ívelő görbe a technológiai fejlődéssel járó inflációt és a prémium (hajlítható, AI-fókuszú) készülékek térnyerését tükrözi. 
+            Látható, hogyan vált a mobiltelefon egyre értékesebb tech-eszközzé az elmúlt évtizedben.
+        </p>
+        <div class="canvas-wrapper"><canvas id="c4"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+        <h2>5. Kijelzőméret és Energia-sűrűség Korreláció (CSV)</h2>
+        <p class="chart-desc">
+            <b>Hogyan értelmezzük?</b> Minden egyes pont egy telefont jelöl. A vízszintes tengely a kijelzőt (inch), a függőleges az akkumulátort (mAh) mutatja. 
+            A grafikon segít megérteni az ergonómiai kompromisszumot: a nagyobb kijelző általában nagyobb akkut igényel, de láthatóak olyan "technológiai bravúrok" is, ahol kisméretű házba is nagy kapacitású telepet tettek.
+        </p>
+        <div class="canvas-wrapper"><canvas id="c5"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+        <h2>6. Egyedi Márka Elemzés (CSV)</h2>
+        <p class="chart-desc">
+            <b>Hogyan értelmezzük?</b> Ez egy interaktív eszköz. A lenyíló menüből kiválasztott márka modelljeit listázza ki ár szerint. 
+            Itt ellenőrizhető a gyártók belső árazási stratégiája: mekkora az árkülönbség az alapmodellek és a csúcskészülékek között. 
+            A diagram az 1000 dollár feletti prémium eszközöket is pontosan kezeli.
+        </p>
+        <select id="brandSelector" onchange="updateInteractive()"></select>
+        <div class="canvas-wrapper"><canvas id="c6"></canvas></div>
+    </div>
+
+    <div class="chart-card" style="border-color: var(--accent);">
+        <h2 style="color: var(--accent);">7. ÉLŐ: Globális Márka-ökoszisztéma (API)</h2>
+        <p class="chart-desc">
+            <b>Hogyan értelmezzük?</b> Ez a vizualizáció élő adatokat használ a <i>Phone Specs API</i>-ból. 
+            A buborékok mérete nem a helyi CSV-nktől függ, hanem a globális adatbázisban regisztrált összes modell számától. 
+            Minél nagyobb egy buborék, annál nagyobb történelmi és jelenkori lábnyoma van az adott márkának a világpiacon.
+        </p>
+        <div class="canvas-wrapper"><canvas id="c7_bubble_api"></canvas></div>
+    </div>
+</div>
+
+<script>
+    const CSV_FILE = 'Mobiles Dataset (2025).csv';
+    const API_URL = 'https://phone-specs-api.vercel.app/brands';
+    let globalData = [];
+    let charts = {};
+    const neonColors = ['#00f2ff', '#bc13fe', '#00ff9d', '#ff0070', '#ffb000', '#3498db'];
+
+    Promise.all([
+        fetch(CSV_FILE).then(r => { if(!r.ok) throw new Error("CSV nem található!"); return r.text(); }),
+        fetch(API_URL).then(r => { if(!r.ok) throw new Error("API nem elérhető!"); return r.json(); })
+    ]).then(([csvText, apiJson]) => {
+        Papa.parse(csvText, {
+            header: true, delimiter: ";", skipEmptyLines: true,
+            complete: function(results) {
+                globalData = results.data;
+                document.getElementById('status').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                initDashboard(apiJson.data);
+            }
+        });
+    }).catch(err => {
+        document.getElementById('status').innerHTML = "HIBA: " + err.message;
+        document.getElementById('status').style.background = "red";
+    });
+
+    function clean(val) {
+        if(!val) return 0;
+        let s = val.toString().trim().replace('$', '');
+        if (s.includes(',')) {
+            let parts = s.split(',');
+            if (parts[parts.length - 1].length === 3) s = s.replace(',', ''); 
+            else s = s.replace(',', '.'); 
         }
+        return parseFloat(s.replace(/[^\d.-]/g, '')) || 0;
+    }
 
-        // 2. Pie Chart
-        const pieSpec = {
-            "data": csvData,
-            "mark": {"type": "arc", "innerRadius": 50},
-            "encoding": {
-                "theta": {"aggregate": "count", "type": "quantitative"},
-                "color": {"field": "Company Name", "type": "nominal"}
+    function initDashboard(apiData) {
+        const brands = {}, ramDist = {}, yearTrend = {}, scatterData = [], bPrices = {};
+
+        globalData.forEach(d => {
+            const b = d['Company Name'], p = clean(d['Launched Price (USA)']), r = clean(d['RAM']), 
+                  y = d['Launched Year'], s = clean(d['Screen Size']), 
+                  batt = clean(d['Battery Capacity']) < 10 ? clean(d['Battery Capacity']) * 1000 : clean(d['Battery Capacity']);
+
+            if(b) {
+                brands[b] = (brands[b] || 0) + 1;
+                if(!bPrices[b]) bPrices[b] = {s:0, c:0};
+                if(p > 0) { bPrices[b].s += p; bPrices[b].c++; }
             }
-        };
+            if(r) ramDist[r + ' GB'] = (ramDist[r + ' GB'] || 0) + 1;
+            if(y && p) { if(!yearTrend[y]) yearTrend[y] = {s:0, c:0}; yearTrend[y].s += p; yearTrend[y].c++; }
+            if(s && batt) scatterData.push({x:s, y:batt, model: (d['Model '] || '').trim()});
+        });
 
-        // 3. Interaktív Scatter Plot
-        const scatterSpec = {
-            "data": csvData,
-            "selection": { "pts": {"type": "multi", "on": "mouseover", "toggle": "true"} },
-            "mark": "point",
-            "encoding": {
-                "x": {"field": "Launched Price (USA)", "type": "quantitative", "title": "Ár (USD)"},
-                "y": {"field": "RAM", "type": "quantitative", "title": "RAM"},
-                "color": {"condition": {"selection": "pts", "field": "Company Name", "type": "nominal"}, "value": "grey"},
-                "tooltip": [{"field": "Model "}, {"field": "Launched Price (USA)"}]
+        const topBrands = Object.entries(brands).sort((a,b)=>b[1]-a[1]).slice(0, 10);
+        
+        createChart('c1', 'bar', { labels: topBrands.map(x=>x[0]), datasets: [{ label: 'Modellek száma', data: topBrands.map(x=>x[1]), backgroundColor: '#00f2ff' }] });
+        createChart('c2', 'doughnut', { labels: Object.keys(ramDist), datasets: [{ data: Object.values(ramDist), backgroundColor: neonColors }] }, { cutout: '70%', maintainAspectRatio: false });
+        
+        const pLabels = topBrands.slice(0, 7).map(x=>x[0]);
+        createChart('c3', 'polarArea', { labels: pLabels, datasets: [{ data: pLabels.map(b=> bPrices[b].c > 0 ? bPrices[b].s/bPrices[b].c : 0), backgroundColor: neonColors.map(c=>c+'88') }] }, { scales: { r: { ticks: { display: false } } }, maintainAspectRatio: false });
+        
+        const years = Object.keys(yearTrend).sort();
+        createChart('c4', 'line', { labels: years, datasets: [{ label: 'Átlagár (USD)', data: years.map(y=>yearTrend[y].s/yearTrend[y].c), borderColor: '#bc13fe', tension: 0.4 }] });
+        
+        createChart('c5', 'scatter', { datasets: [{ label: 'Modellek', data: scatterData, backgroundColor: 'rgba(0, 242, 255, 0.4)' }] }, { plugins: { tooltip: { callbacks: { label: (ctx)=>ctx.raw.model } } } });
+
+        const apiSorted = apiData.sort((a,b) => b.device_count - a.device_count).slice(0, 20);
+        new Chart(document.getElementById('c7_bubble_api'), {
+            type: 'bubble',
+            data: {
+                datasets: apiSorted.map((b, i) => ({
+                    label: b.brand_name,
+                    data: [{ x: i + 1, y: 50, r: Math.sqrt(b.device_count) * 2 }],
+                    backgroundColor: neonColors[i % neonColors.length] + '88',
+                    borderColor: neonColors[i % neonColors.length],
+                    borderWidth: 2
+                }))
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { x: { display: false }, y: { display: false, min: 0, max: 100 } },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${apiSorted[ctx.datasetIndex].device_count} eszköz` } }
+                }
             }
-        };
+        });
 
-        // 4. Bar Chart
-        const barSpec = {
-            "data": csvData,
-            "mark": "bar",
-            "encoding": {
-                "x": {"aggregate": "mean", "field": "Launched Price (USA)", "type": "quantitative"},
-                "y": {"field": "Company Name", "type": "nominal", "sort": "-x"}
-            }
-        };
+        const sel = document.getElementById('brandSelector');
+        [...new Set(globalData.map(d=>d['Company Name']))].sort().forEach(b => { if(b) sel.innerHTML += `<option value="${b}">${b}</option>`; });
+        updateInteractive();
+    }
 
-        // 5. Histrogram (Akkumulátor)
-        const histSpec = {
-            "data": csvData,
-            "mark": "bar",
-            "encoding": {
-                "x": {"field": "Battery Capacity", "type": "nominal", "title": "Kapacitás"},
-                "y": {"aggregate": "count", "type": "quantitative"}
-            }
-        };
+    function createChart(id, type, data, opts = {}) {
+        return new Chart(document.getElementById(id), { type, data, options: { ...opts, responsive: true, maintainAspectRatio: false } });
+    }
 
-        // 6. Line Chart (Évek)
-        const lineSpec = {
-            "data": csvData,
-            "mark": "line",
-            "encoding": {
-                "x": {"field": "Launched Year", "type": "ordinal"},
-                "y": {"aggregate": "count", "type": "quantitative"}
-            }
-        };
-
-        fetchCurrency();
-        vegaEmbed('#chart-pie', pieSpec);
-        vegaEmbed('#chart-scatter', scatterSpec);
-        vegaEmbed('#chart-bar', barSpec);
-        vegaEmbed('#chart-hist', histSpec);
-        vegaEmbed('#chart-line', lineSpec);
-    </script>
+    function updateInteractive() {
+        const brand = document.getElementById('brandSelector').value;
+        const subset = globalData.filter(d => d['Company Name'] === brand).slice(0, 15);
+        if(charts['c6']) charts['c6'].destroy();
+        charts['c6'] = createChart('c6', 'bar', {
+            labels: subset.map(d => (d['Model '] || '').trim()),
+            datasets: [{ label: 'Bevezetési Ár (USD)', data: subset.map(d => clean(d['Launched Price (USA)'])), backgroundColor: '#00f2ff' }]
+        }, { indexAxis: 'y', scales: { x: { beginAtZero: true, max: 1600 } } });
+    }
+</script>
 </body>
 </html>
