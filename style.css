@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600&display=swap');
+
+:root {
+    --bg-color: #010204;
+    --card-bg: #0a0c10;
+    --primary: #00f2ff;
+    --secondary: #bc13fe;
+    --accent: #00ff9d;
+    --text-main: #ffffff;
+    --text-dim: #94a3b8;
+    --border: rgba(0, 242, 255, 0.4);
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    margin: 0; padding: 0;
+    display: flex; flex-direction: column; align-items: center;
+}
+
+.container { width: 90%; max-width: 1000px; padding: 60px 0; }
+
+.header { text-align: center; margin-bottom: 60px; }
+.header h1 {
+    font-family: 'Orbitron', sans-serif; font-size: clamp(2rem, 8vw, 4rem);
+    letter-spacing: 10px; background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;
+}
+
+.chart-card {
+    background: var(--card-bg); border: 2px solid var(--border);
+    border-radius: 20px; padding: 40px; margin-bottom: 60px;
+    box-shadow: 0 0 30px rgba(0, 242, 255, 0.1);
+}
+
+.chart-card h2 {
+    font-family: 'Orbitron', sans-serif; font-size: 1.8rem;
+    letter-spacing: 2px; margin-bottom: 15px; color: var(--primary);
+}
+
+.chart-desc {
+    font-size: 1.3rem; color: var(--text-dim); margin-bottom: 30px;
+    line-height: 1.7; border-left: 4px solid var(--secondary); padding-left: 20px;
+}
+
+.canvas-wrapper { position: relative; width: 100%; height: 500px; }
+
+.circular-wrapper {
+    width: 100%; max-width: 450px; height: 450px;
+    margin: 0 auto; position: relative;
+}
+
+select {
+    background: #000; color: var(--primary); border: 2px solid var(--primary);
+    padding: 15px; font-family: 'Orbitron', sans-serif; font-size: 1.1rem;
+    width: 100%; margin-bottom: 30px; cursor: pointer;
+}
+
+#status {
+    position: fixed; top: 20px; right: 20px; padding: 15px 25px;
+    background: var(--secondary); border-radius: 5px; font-family: 'Orbitron';
+    font-size: 1rem; z-index: 1000; box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
